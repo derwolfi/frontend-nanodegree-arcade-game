@@ -1,3 +1,12 @@
-body {
-    text-align: center;
-}
+body { text-align: center; margin: 0; background-color: #fffaec; }
+canvas { float: left; }
+.container { width: 705px; margin: 0 auto; position: relative; display: table; }
+.container button { position: absolute; top: 50%; left: 20%; font-size: 40px; }
+#controls { padding-top: 50px; width: 130px; float:left; text-align: center; }
+#controls select { margin-top: 10px; }
+#controls #score,
+#controls #selectedPlayer em,
+#controls #level { display: none; }
+
+#selectedPlayer { position: relative; }
+#selectedPlayer em { position: absolute; left: 25%; top: 20px; font-size: 20px; font-style: normal; }

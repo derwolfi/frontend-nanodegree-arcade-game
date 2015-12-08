@@ -6,8 +6,29 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/engine.js"></script>
+	<div class="container"><button id="start"> Start Game </button>
+		<canvas id="canvas"></canvas>
+		<div id="controls">
+			<h2 id="score">Score: <em></em></h2>
+			<h3 id="level">Level: <em></em></h3>
+			<p id="selectedPlayer">
+				<em></em>
+				<img src="images/char-boy.png">
+			</p>
+			<form id="selectPlayer">
+				Change Player<br/>
+			  <select>
+			    <option value="images/char-boy.png">Boy</option>
+			    <option value="images/char-cat-girl.png">Cat Girl</option>
+			    <option value="images/char-horn-girl.png">Horn Girl</option>
+			    <option value="images/char-pink-girl.png">Pink Girl</option>
+			    <option value="images/char-princess-girl.png">Princess Girl</option>
+			  </select>
+			</form>
+		</div>
+	</div>
+  <script src="js/resources.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/engine.js"></script>
 </body>
 </html>

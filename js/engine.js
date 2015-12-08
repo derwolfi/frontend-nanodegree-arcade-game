@@ -21,13 +21,21 @@ var Engine = (function(global) {
      */
     var doc = global.document,
         win = global.window,
-        canvas = doc.createElement('canvas'),
+        canvas = document.querySelector("#canvas"),
+        startbutton = document.querySelector("#start"),
+        // canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
 
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    startbutton.addEventListener("click", startGame, false);
+
+    // Change the Player Icon before the Game ist started.
+    player.selectPlayer.onchange = function() {
+        player.sprite = this.value;
+    };
+    // doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -64,7 +72,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+        //reset();
         lastTime = Date.now();
         main();
     }
@@ -80,7 +88,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -95,6 +103,25 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+    }
+
+    function checkCollisions() {
+        if(gem.x === player.x && gem.y === player.y) {
+            if(!player.collidedGem) {
+                player.collidedGem = true;
+                gem.show = false;
+                player.score += gem.bonus;
+            }
+        }
+        allEnemies.forEach(function(enemy) {
+            if( !(player.x - 83 >= Math.round(enemy.x) || player.x + 20 <= Math.round(enemy.x)) && player.y === enemy.y) {
+                if(!player.collidedEnemy) {
+                    player.collidedEnemy =  true;
+                    reset();
+                }
+            }
+        });
+
     }
 
     /* This function initially draws the "game level", it will then call
@@ -147,11 +174,13 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        gem.render();
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
         player.render();
+
     }
 
     /* This function does nothing but it could have been a good place to
@@ -159,7 +188,16 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        player.lives -= 1;
+        player.y = 382;
+        player.x = 202;
+        player.collidedEnemy = false;
+        if(player.lives < 1 ) {
+            player.lives = 3;
+            player.score = 0;
+            startbutton.style.display = 'block';
+            player.playing = false;
+        }
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -171,7 +209,18 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-princess-girl.png',
+        'images/Gem-Blue.png',
+        'images/Gem-Green.png',
+        'images/Gem-Orange.png',
+        'images/Heart.png',
+        'images/Key.png',
+        'images/Star.png',
+        'images/Selector.png'
     ]);
     Resources.onReady(init);
 
