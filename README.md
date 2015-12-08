@@ -1,6 +1,9 @@
 frontend-nanodegree-arcade-game
 ===============================
 
+# Run Arcade Game
+Checkout this repo an open the index.html
+
 # Playing the Game
 You can choose a Player in the Pulldown-Menu.
 After start the Game you need to come with the player into the Water without a collision with a Enemy.
