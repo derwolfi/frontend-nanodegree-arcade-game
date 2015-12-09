@@ -13,12 +13,15 @@ After start the Game you need to come with the player into the Water without a c
 
 ## Controls
 
-You navigat with the Arrow keys:
+You navigate with the Arrow keys:
 
-Arrow left: Player goes to the left
-Arrow right: Player goes to the right
-Arrow up: Player goes up
-Arrow down: Player goes down
+Arrow left: Player goes to the left.
+
+Arrow right: Player goes to the right.
+
+Arrow up: Player goes up.
+
+Arrow down: Player goes down.
 
 ## Score
 
