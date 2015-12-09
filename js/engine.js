@@ -197,7 +197,9 @@ var Engine = (function(global) {
             player.score = 0;
             startbutton.style.display = 'block';
             player.playing = false;
+            gem.active = false;
         }
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to

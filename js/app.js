@@ -1,4 +1,26 @@
 /**
+ * constant
+ */
+var TILE_WIDTH = 101,
+    TILE_HEIGHT = 83,
+    TILE_START = 50;
+
+
+var Entity = function() {
+    this.row = {
+        '1': TILE_START,
+        '2': TILE_START + TILE_HEIGHT,
+        '3': TILE_START + (2 * TILE_HEIGHT)
+    };
+};
+
+// Draw the Element on the screen, required method for game
+Entity.prototype.render = function() {
+    if(player.playing) {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+};
+/**
 * Enemies our player must avoid
 * @param {number} row - starts with line .. default 1
 * @param {number} speed - starts with speed .. default 1
@@ -11,18 +33,15 @@ var Enemy = function(row,speed) {
     * The image/sprite for our enemies, this uses
     * a helper we've provided to easily load images
     */
+    Entity.call(this);
     this.sprite = 'images/enemy-bug.png';
-    this.row = {
-        '1': 50,
-        '2': 133,
-        '3': 216,
-        '4': 299
-    };
     this.x = 0;
     this.y = this.row[row] || this.row[1];
     this.speed = speed || 1;
 
 };
+Enemy.prototype = Object.create(Entity.prototype);
+Enemy.prototype.constructor = Enemy;
 
 /**
 * Update the enemy's position, required method for game
@@ -36,18 +55,11 @@ Enemy.prototype.update = function(dt) {
      * Enemies runs from left (-100) to right (600) then set new speed
      */
     if(this.x < 600) {
-        this.x += 101 * (dt * this.speed);
+        this.x += TILE_WIDTH * (dt * this.speed);
     } else {
         this.speed = getRandomInt(1,3);
         this.y = this.row[getRandomInt(1,3)];
         this.x = -100;
-    }
-};
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    if(player.playing) {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 };
 
@@ -58,8 +70,8 @@ Enemy.prototype.render = function() {
  */
 var Player = function() {
     this.sprite = 'images/char-boy.png';
-    this.x = 202;
-    this.y = 382;
+    this.x = 2 * TILE_WIDTH;
+    this.y = TILE_START + (4 * TILE_HEIGHT);
     this.score = 0;
     this.level = 1;
     this.playing = false;
@@ -74,6 +86,7 @@ var Player = function() {
     this.livesElement = this.selectedPlayer.querySelector('em');
     this.playerElement = this.selectedPlayer.querySelector('img');
 };
+Player.prototype = Object.create(Entity.prototype);
 
 /** update the Player and the Level, set gem active
  * update the HTML-Tags (Score, Level, Lives)
@@ -82,13 +95,13 @@ Player.prototype.update = function() {
     // Update the Level
     switch(true) {
         case (this.score < 10):
-            player.level = 1;
+            this.level = 1;
             break;
         case (this.score < 50):
-            player.level = 2;
+            this.level = 2;
             break;
         case (this.score < 100):
-            player.level = 3;
+            this.level = 3;
             break;
     }
     if(this.score > 3 && !gem.active){
@@ -102,34 +115,26 @@ Player.prototype.update = function() {
     this.playerElement.src = this.sprite;
 };
 
-/**
- * Draw the player
- */
-Player.prototype.render = function() {
-    if(this.playing) {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
-};
 
 // where to got left, up, down or right
 Player.prototype.handleInput = function(keycode) {
     var move = {
-        'left': -101,
-        'right': 101,
-        'up': -83,
-        'down': 83
+        'left': - TILE_WIDTH,
+        'right': TILE_WIDTH,
+        'up': - TILE_HEIGHT,
+        'down': TILE_HEIGHT
     };
     if (keycode === 'up' || keycode === 'down') {
-        if( ( player.y + move[keycode] >= 50 ) && ( player.y + move[keycode] <= 382 )) {
-            player.y += move[keycode];
-        } else if (player.y + move[keycode] < 50 ) { // Update the Score if Player jump into the water.
-            player.y = 382;
-            player.x = 202;
-            player.score += 1;
+        if( ( this.y + move[keycode] >= 50 ) && ( this.y + move[keycode] <= 382 )) {
+            this.y += move[keycode];
+        } else if (this.y + move[keycode] < 50 ) { // Update the Score if Player jump into the water.
+            this.y = 382;
+            this.x = 202;
+            this.score += 1;
         }
     } else if (keycode === 'left' || keycode === 'right') {
-        if( ( player.x + move[keycode] >= 0 ) && ( player.x + move[keycode] <= 404 ) ) {
-            player.x += move[keycode];
+        if( ( this.x + move[keycode] >= 0 ) && ( this.x + move[keycode] <= 404 ) ) {
+            this.x += move[keycode];
         }
     }
 };
@@ -138,6 +143,7 @@ Player.prototype.handleInput = function(keycode) {
  * Gem Class for Bonus Points.
  */
 var Gem = function() {
+    Entity.call(this);
     this.sprites = {
         '1': {
                 'gem': 'images/Gem-Blue.png',
@@ -172,13 +178,8 @@ var Gem = function() {
     this.active = false;
     this.bonus = 1;
     this.show = false;
-    this.row = {
-        "1": 50,
-        "2": 133,
-        "3": 216
-    };
-    this.x = 101;
-    this.y = 216;
+    this.x = TILE_WIDTH;
+    this.y = TILE_START + (2 * TILE_HEIGHT);
 };
 
 // render the Gem
