@@ -3,7 +3,7 @@ frontend-nanodegree-arcade-game
 
 # Run Arcade Game
 
-Checkout this repo an open the index.html
+Checkout this repo an open the index.html.
 
 # Playing the Game
 
@@ -32,6 +32,6 @@ Collecting gems brings bonus Points for your Score
 Gems are available in 7 different versions with different points
 
 ## Levels
-Level 2 comes from 50 points
+Level 2 comes from 50 points.
 
-Level 3 comes from 100 points
+Level 3 comes from 100 points.
